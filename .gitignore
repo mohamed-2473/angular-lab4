@@ -56,3 +56,19 @@ dist/
 .idea/
 .vscode/
 *.log
+
+# Angular
+/dist
+/node_modules
+
+# IDE
+/.idea
+/.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+/.env

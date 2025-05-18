@@ -1,5 +1,8 @@
 <div class="col">
-  <div class="card h-100 product-card">
+  <div 
+    class="card h-100 product-card cursor-pointer"
+    (click)="viewProductDetails($event, productItem.id)"
+  >
     <div class="position-relative">
       <img 
         [src]="productItem.thumbnail" 
@@ -36,16 +39,12 @@
       
       <div class="d-flex gap-2 mt-auto">
         <button 
-          class="btn btn-primary rounded-pill flex-grow-1 py-1 btn-sm" 
+          class="btn btn-primary rounded-pill py-1 btn-sm" 
           [disabled]="productItem.stock === 0"
+          (click)="$event.stopPropagation()"
+          style="width: 120px;"
         >
           <i class="bi bi-cart-plus me-1"></i>Add to cart
-        </button>
-        <button 
-          class="btn btn-outline-secondary rounded-pill py-1 btn-sm" 
-          (click)="viewProductDetails($event, productItem.id)"
-        >
-          <i class="bi bi-eye me-1"></i>Details
         </button>
       </div>
     </div>
