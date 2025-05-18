@@ -60,6 +60,7 @@ dist/
 # Angular
 /dist
 /node_modules
+/.angular/cache
 
 # IDE
 /.idea

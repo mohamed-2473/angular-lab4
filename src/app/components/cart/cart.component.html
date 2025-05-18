@@ -1,5 +1,91 @@
-<div class="empty-cart">
-    <i class="bi bi-cart-x empty-cart-icon"></i>
-    <h3 class="empty-cart-message">Your cart is empty</h3>
-    <a routerLink="/products" class="btn btn-primary">Continue Shopping</a>
+<div class="container py-5">
+  @if (cartService.getCartCount() === 0) {
+    <div class="empty-cart text-center">
+      <i class="bi bi-cart-x fs-1 text-muted"></i>
+      <h3 class="my-3">Your cart is empty</h3>
+      <a routerLink="/products" class="btn btn-primary">
+        Continue Shopping
+      </a>
+    </div>
+  } @else {
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h4>Your Cart ({{ cartService.getCartCount() }} items)</h4>
+          </div>
+          <div class="card-body">
+            @for (item of cartService.cartItems$ | async; track item.product.id) {
+              <div class="row mb-3 align-items-center border-bottom pb-3">
+                <div class="col-md-2">
+                  <img [src]="item.product.thumbnail" 
+                       [alt]="item.product.title" 
+                       class="img-fluid rounded">
+                </div>
+                <div class="col-md-4">
+                  <h5>{{ item.product.title }}</h5>
+                  <p class="text-muted small">{{ item.product.brand || 'Generic' }}</p>
+                </div>
+                <div class="col-md-2">
+                  <span class="fw-bold">{{ item.product.price | currency }}</span>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <button class="btn btn-outline-secondary" 
+                            type="button"
+                            (click)="decrementQuantity(item.product.id, item.quantity)">
+                      -
+                    </button>
+                    <input type="text" 
+                           class="form-control text-center" 
+                           [value]="item.quantity"
+                           readonly>
+                    <button class="btn btn-outline-secondary" 
+                            type="button"
+                            (click)="incrementQuantity(item.product.id, item.quantity)">
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-2 text-end">
+                  <button class="btn btn-outline-danger btn-sm" 
+                          (click)="cartService.removeFromCart(item.product.id)">
+                    <i class="bi bi-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h4>Order Summary</h4>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <span>Subtotal:</span>
+              <span class="fw-bold">{{ cartService.getCartTotal() | currency }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Shipping:</span>
+              <span class="fw-bold">Free</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="fw-bold">Total:</span>
+              <span class="fw-bold">{{ cartService.getCartTotal() | currency }}</span>
+            </div>
+            <button class="btn btn-primary w-100 mb-2">Proceed to Checkout</button>
+            <button class="btn btn-outline-secondary w-100" 
+                    (click)="cartService.clearCart()">
+              Clear Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </div>
